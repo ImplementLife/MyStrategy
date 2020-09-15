@@ -10,10 +10,10 @@ public class RatioButton extends Button {
     private final Vec2D pos = new Vec2D();
     private float radius;
 
-    public RatioButton(Vec2D pos, float radius, Runnable exp) {
+    public RatioButton(Vec2D pos, float radius, Runnable exe) {
         this.pos.setXY(pos);
         this.radius = radius;
-        setExp(exp);
+        setExe(exe);
     }
 
     @Override

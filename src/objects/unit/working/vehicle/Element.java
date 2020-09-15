@@ -1,19 +1,20 @@
 package objects.unit.working.vehicle;
 
 import draw.drawer.GameDrawer;
+import lib.math.Angle;
 import lib.math.Vec2D;
 
 import java.awt.*;
 
 public class Element {
     private final Vec2D pos;
-    private float angle;
+    private final Angle angle;
     private Vec2D offset;
     private Image image;
 
     public Element(final Vec2D pos, Image image, float angle) {
         this.pos = pos;
-        this.angle = angle;
+        this.angle = new Angle(angle);
         this.image = image;
     }
     public Element(final Vec2D pos, Vec2D offset, Image image, float angle) {
@@ -26,7 +27,10 @@ public class Element {
     }
 
     public void setAngle(float angle) {
-        this.angle = angle;
+        this.angle.setValue(angle);
+    }
+    public void setAngle(Angle angle) {
+        this.angle.setValue(angle);
     }
 
     public void draw(GameDrawer drawer) {

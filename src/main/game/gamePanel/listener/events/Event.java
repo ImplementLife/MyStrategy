@@ -4,6 +4,7 @@ public class Event {
     //==========     Static     =============//
     public static final int LEFT_MOUSE_BUTTON = -1;
     public static final int RIGHT_MOUSE_BUTTON = -2;
+    public static final int WHEEL_MOUSE_BUTTON = -3;
     //=======================================//
 
     private State state;
@@ -23,6 +24,9 @@ public class Event {
     }
     public boolean isReleased() {
         return state == State.RELEASED;
+    }
+    public boolean isClicked() {
+        return state == State.CLICKED;
     }
 
     public int getKeyCode() {

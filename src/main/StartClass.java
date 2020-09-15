@@ -7,11 +7,13 @@ import main.game.gamePanel.GamePanel;
 import update.Updater;
 
 import javax.swing.*;
+import java.awt.*;
 
 public final class StartClass {
     private StartClass() {}
 
     private static JFrame frame;
+    private static GamePanel gamePanel;
 
     public static Vec2D sizeFrame() {
         return new Vec2D(frame.getSize());
@@ -28,7 +30,7 @@ public final class StartClass {
         frame.setUndecorated(true);
         //==========================================//
 
-        GamePanel gamePanel = new GamePanel();
+        gamePanel = new GamePanel();
         frame.setContentPane(gamePanel);
         frame.setVisible(true);
 
@@ -41,9 +43,13 @@ public final class StartClass {
         gamePanel.init();
         gameService.addUnit();
         Updater.start();
+    }
 
-
-
+    public static void setCursor(String name) {
+        gamePanel.setCursor(name);
+    }
+    public static void resetCursor() {
+        gamePanel.resetCursor();
     }
 
     private static void test() {

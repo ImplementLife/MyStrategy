@@ -19,20 +19,19 @@ public class GameService {
     }
 
     public void addUnit() {
-//        new Analyzer(e -> {
-//            if (e.isPressed() && e.getKeyCode() == Event.LEFT_MOUSE_BUTTON) {
-//                new Bullet(new Vec2D(), Listener.getMousePos(), "resource/bullet/bullet_01.png");
-//            }
-//        });
         Bullet.init();
         {
 
             //SquadFabric.createTankSquad(new Vec2D(100, 100), 1, 0);
             Vec2D pos = new Vec2D(0, 200);
             for (int i = 0; i < 1; i++) {
-                SquadFabric.createHumanSquad(pos.addX(200), 10, 200);
+                SquadFabric.createHumanSquad(pos.addX(200), 10, 200, 0);
+
 //                SquadFabric.createTankSquad(pos.addX(200), 3, 150);
             }
+            SquadFabric.createHumanSquad(pos.addX(1000), 10, 200, 1);
+            SquadFabric.createHumanSquad(pos.addY(200), 10, 200, 1);
+            SquadFabric.createHumanSquad(pos.addY(200), 10, 200, 1);
 //            for (int i = 0; i < 10; i++) {
 //                new Wagon(RailWay.allRailWay.get(0), 200 + i*600);
 //            }

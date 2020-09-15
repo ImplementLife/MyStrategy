@@ -1,6 +1,7 @@
 package objects.unit.working.vehicle.car;
 
 import draw.drawer.GameDrawer;
+import lib.math.Angle;
 import lib.math.Vec2D;
 import objects.game.objects.Obj;
 import objects.game.objects.ObjTypes;
@@ -54,7 +55,7 @@ public class Car extends Obj {
 
     @Override
     public void draw(GameDrawer drawer) {
-        drawer.drawImage(pos, /*lastPos,*/ image, angle);
+        drawer.drawImage(pos, /*lastPos,*/ image, new Angle(angle));
         //Wheels
         Vec2D w11 = Vec2D.newAngVec(pos, length/2, angle);
         Vec2D w22 = Vec2D.newAngVec(pos, length/2, angle - Math.PI);

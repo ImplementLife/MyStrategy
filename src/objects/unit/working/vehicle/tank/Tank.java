@@ -62,6 +62,17 @@ public class Tank extends Unit {
     //=======================================//
     //   Unit Overrides
 
+
+    @Override
+    public void attack(Unit unit) {
+
+    }
+
+    @Override
+    public boolean kill() {
+        return false;
+    }
+
     @Override
     public Vec2D getPos() {
         return posNow;
@@ -87,6 +98,7 @@ public class Tank extends Unit {
 
     @Override
     public void update() {
+        super.update();
         mover.update();
         posTurretNow.setAngVec(posNow, lTurret, dbt.getAngleBody());
         body.setAngle(dbt.getAngleBody());

@@ -58,7 +58,11 @@ public abstract class Button extends Obj {
         }
     }
 
-    public void setExp(Runnable exp) {
-        updateExecute = exp;
+    public ButtonState getState() {
+        return state;
+    }
+
+    public void setExe(Runnable exe) {
+        updateExecute = exe;
     }
 }

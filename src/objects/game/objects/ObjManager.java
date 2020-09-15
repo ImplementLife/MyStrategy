@@ -3,8 +3,9 @@ package objects.game.objects;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
-public class ObjManager {
+public final class ObjManager {
     //==========     Static     =============//
     private static ObjManager objManager;
 
@@ -14,19 +15,22 @@ public class ObjManager {
     }
 
     //==============================================//
+    private final ConcurrentSkipListMap<Id, Obj> objects;
+//    private final TreeMap<Id, Obj> objects;
+    private ArrayList<Id> idFromClear;
+    private TreeMap<Id, Obj> objFromAdd;
 
-    private final TreeMap<Id, Obj> objects = new TreeMap<>();
+    private ObjManager() {
+        objects = new ConcurrentSkipListMap<>();
+//        objects = new TreeMap<>();
+        objFromAdd = new TreeMap<>();
+        idFromClear = new ArrayList<>();
+    }
 
     //==============================================//
 
     public synchronized Collection<Obj> getObj() {
         return objects.values();
-    }
-
-    public synchronized Collection<Obj> getObjFromId(Collection<Id> listId) {
-        Collection<Obj> returnedListObj = new ArrayList<>();
-        for (Id id : listId) returnedListObj.add(objects.get(id));
-        return returnedListObj;
     }
 
     public synchronized Collection<Obj> getObjFromType(ObjTypes unitType) {
@@ -36,45 +40,39 @@ public class ObjManager {
         return returnedListObj;
     }
 
+    public synchronized Collection<Obj> getObjFromId(Collection<Id> listId) {
+        Collection<Obj> returnedListObj = new ArrayList<>();
+        for (Id id : listId) returnedListObj.add(objects.get(id));
+        return returnedListObj;
+    }
+
     public synchronized Obj getObjFromId(Id id) {
         Obj obj = objects.get(id);
         if (obj == null) obj = objFromAdd.get(id);
         return obj;
     }
 
-    //==============================================//
-
-    private ArrayList<Id> idFromClear = new ArrayList<>();
-
-    public void remove(Obj obj) {
-        idFromClear.add(obj.getId());
-    }
-
-    private void clearObjects() {
+    public synchronized void updateList() {
+        //Clear Obj
         for (Id id : idFromClear) {
             objects.remove(id);
             //id.isFree();
         }
         idFromClear.clear();
-    }
 
-    //==============================================//
 
-    private TreeMap<Id, Obj> objFromAdd = new TreeMap<>();
-
-    public void put(Obj obj) {
-        objFromAdd.put(obj.getId(), obj);
-    }
-
-    private void addObjects() {
+        //Add Obj
         objects.putAll(objFromAdd);
         objFromAdd.clear();
     }
 
     //==============================================//
 
-    public synchronized void updateList() {
-        clearObjects();
-        addObjects();
+    public void remove(Obj obj) {
+        idFromClear.add(obj.getId());
+    }
+
+    public void put(Obj obj) {
+        objFromAdd.put(obj.getId(), obj);
     }
 }

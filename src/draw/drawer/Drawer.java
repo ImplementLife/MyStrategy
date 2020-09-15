@@ -7,8 +7,6 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Objects;
 
 /**
  * Делегируй методы
@@ -65,39 +63,8 @@ public class Drawer {
 
     ///   Draw / Fill pentagon
 
-    private static class D extends Path2D.Double {
-        private static int TRIANGLE = 1;
-        private static int PENTAGON = 2;
-
-        private Vec2D pos;
-        private float size;
-        private int type;
-
-        public D(Vec2D pos, float size, int type) {
-            this.pos = pos;
-            this.size = size;
-            this.type = type;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            D d = (D) o;
-            return java.lang.Float.compare(d.size, size) == 0 &&
-                    type == d.type &&
-                    Objects.equals(pos, d.pos);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(pos, size, type);
-        }
-    }
-    private static HashMap<Integer, D> dHashSet = new HashMap<>();
-
-    public Path2D.Double getPentagon(Vec2D pos, float size) {
-        Path2D.Double triangle = new Path2D.Double();
+    public Path2D.Float getPentagon(Vec2D pos, float size) {
+        Path2D.Float triangle = new Path2D.Float();
 
         Vec2D pos1 = new Vec2D(pos);
         pos1.subY((size + (size * Math.sqrt(3))/2)/2);
@@ -132,8 +99,8 @@ public class Drawer {
 
     ///   Draw / Fill triangle
 
-    private Path2D.Double getTriangle(Vec2D pos, float size) {
-        Path2D.Double triangle = new Path2D.Double();
+    private Path2D.Float getTriangle(Vec2D pos, float size) {
+        Path2D.Float triangle = new Path2D.Float();
 
         Vec2D pos1 = new Vec2D(pos);
         pos1.subY((size * Math.sqrt(3))/4);
@@ -172,7 +139,11 @@ public class Drawer {
     public void drawLine(Vec2D start, Vec2D end, int thickness, Color color) {
         g.setColor(color);
         g.setStroke(new BasicStroke(thickness));
-        g.drawLine(start.getIntX(), start.getIntY(), end.getIntX(), end.getIntY());
+        Path2D.Float line = new Path2D.Float();
+        line.moveTo(start.getX(), start.getY());
+        line.lineTo(end.getX(), end.getY());
+        line.closePath();
+        g.draw(line);
         g.setStroke(defaultStroke);
     }
 

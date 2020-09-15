@@ -1,5 +1,7 @@
 package update.move;
 
+import lib.Data;
+
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -10,6 +12,7 @@ public abstract class SpeedController implements Mover {
 
     protected static class Speeds {
         private static final HashMap<Integer, Speeds> mapSpeeds = new HashMap<>();
+        private static Data<Speeds> data = new Data<>();
 
         public final float maxSpeedForward;    //Максимальная скорость движения вперёд
         public final float maxSpeedBack;       //Максимальная скорость движения назад

@@ -54,11 +54,11 @@ public final class Id implements Comparable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof Id) {
-            return this.type == ((Id)obj).type && this.num == ((Id)obj).num;
-        }
-        return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Id id = (Id) o;
+        return type == id.type && num == id.num;
     }
 
     @Override

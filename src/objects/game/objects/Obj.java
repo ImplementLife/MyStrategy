@@ -1,14 +1,10 @@
 package objects.game.objects;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.TreeMap;
-import java.util.concurrent.ConcurrentSkipListMap;
 
 public abstract class Obj implements Updatable, Drawn, Comparable {
-
     private Id id;
-    protected boolean removed;
+    private boolean removed;
 
     //==============================================//
 
@@ -23,12 +19,29 @@ public abstract class Obj implements Updatable, Drawn, Comparable {
         return new Id(id);
     }
 
-    public void remove() {
+    public final void remove() {
         remove(this);
         removed = true;
     }
 
+    public final boolean isRemoved() {
+        return removed;
+    }
+
     //==============================================//
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Obj obj = (Obj) o;
+        return id.equals(obj.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 
     @Override
     public final int compareTo(Object arg) {
@@ -41,72 +54,31 @@ public abstract class Obj implements Updatable, Drawn, Comparable {
     }
 
     /*============================================================================================*/
-    /*============================================================================================*/
-    /*============================================================================================*/
 
-//    private static TreeMap<Id, Obj> objects = new TreeMap<>();
-    private static ConcurrentSkipListMap<Id, Obj> objects = new ConcurrentSkipListMap<>();
+    private static ObjManager objManager = ObjManager.getObjManager();
 
-    //==============================================//
-
-    public static synchronized Collection<Obj> getObj() {
-        return objects.values();
+    public static Collection<Obj> getObj() {
+        return objManager.getObj();
     }
-
-    public static synchronized Collection<Obj> getObjFromId(Collection<Id> listId) {
-        Collection<Obj> returnedListObj = new ArrayList<>();
-        for (Id id : listId) returnedListObj.add(objects.get(id));
-        return returnedListObj;
+    public static Collection<Obj> getObjFromType(ObjTypes unitType) {
+        return objManager.getObjFromType(unitType);
     }
-
-    public static synchronized Collection<Obj> getObjFromType(ObjTypes unitType) {
-        Collection<Obj> returnedListObj = new ArrayList<>();
-        Collection<Id> keySet = objects.keySet();
-        for (Id id : keySet) if (id.getType() == unitType.Type) returnedListObj.add(objects.get(id));
-        return returnedListObj;
+    public static Collection<Obj> getObjFromId(Collection<Id> listId) {
+        return objManager.getObjFromId(listId);
     }
-
-    public static synchronized Obj getObjFromId(Id id) {
-        Obj obj = objects.get(id);
-        if (obj == null) obj = objFromAdd.get(id);
-        return obj;
+    public static Obj getObjFromId(Id id) {
+        return objManager.getObjFromId(id);
     }
-
-    //==============================================//
-
-    private static ArrayList<Id> idFromClear = new ArrayList<>();
-
-    public static void remove(Obj obj) {
-        idFromClear.add(obj.getId());
-    }
-
-    private static void clearObjects() {
-        for (Id id : idFromClear) {
-            objects.remove(id);
-            //id.isFree();
-        }
-        idFromClear.clear();
-    }
-
-    //==============================================//
-
-    private static TreeMap<Id, Obj> objFromAdd = new TreeMap<>();
-
-    public static void put(Obj obj) {
-        objFromAdd.put(obj.getId(), obj);
-    }
-
-    private static void addObjects() {
-        objects.putAll(objFromAdd);
-        objFromAdd.clear();
-    }
-
-    //==============================================//
 
     public static void updateList() {
-        clearObjects();
-        addObjects();
+        objManager.updateList();
     }
+    public static void remove(Obj obj) {
+        objManager.remove(obj);
 
+    }
+    public static void put(Obj obj) {
+        objManager.put(obj);
+    }
 }
 

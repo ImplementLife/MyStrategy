@@ -106,11 +106,11 @@ public class GameDrawer {
     public void drawImage(Vec2D pos, Image image) {
         drawer.drawImage(posOnCamera(pos), image);
     }
-    public void drawImage(Vec2D pos, Image image, float angle) {
-        drawer.drawImage(pos, image, angle);
+    public void drawImage(Vec2D pos, Image image, Angle angle) {
+        drawer.drawImage(pos, image, angle.getValue());
     }
-    public void drawImage(Vec2D pos, Vec2D offset, Image image, float angle) {
-        drawer.drawImage(pos, offset, image, angle);
+    public void drawImage(Vec2D pos, Vec2D offset, Image image, Angle angle) {
+        drawer.drawImage(pos, offset, image, angle.getValue());
     }
 
     public void drawString(Vec2D pos, String text, int size, Color color) {

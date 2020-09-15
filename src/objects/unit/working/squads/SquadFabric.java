@@ -15,11 +15,15 @@ public final class SquadFabric {
         squad.updateButtonPos();
         return squad;
     }
-    public static Squad createHumanSquad(Vec2D pos, int count, float radius) {
+    public static Squad createHumanSquad(Vec2D pos, int count, float radius, int player) {
         Squad squad = new Squad();
         for (int i = 0; i < count; i++) {
-            squad.putMembers(new Human(Vec2D.newRandomVec(pos, radius)));
+            Human human = new Human(Vec2D.newRandomVec(pos, radius));
+            human.setPlayer(player);
+            squad.putMembers(human);
         }
+        squad.setPlayer(player);
+
         squad.updateButtonPos();
         return squad;
     }

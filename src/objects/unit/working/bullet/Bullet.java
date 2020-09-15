@@ -25,7 +25,7 @@ public class Bullet extends Obj {
 
         analyzer = new Analyzer(e -> {
             if (e.isPressed() && e.getKeyCode() == Event.LEFT_MOUSE_BUTTON) {
-                new Bullet(new Vec2D(), Listener.globalMousePos, "resource/bullet/trace_10.png");
+                new Bullet(new Vec2D(), Listener.globalMousePos, null);
             }
         });
     }
@@ -38,30 +38,45 @@ public class Bullet extends Obj {
 
     private final Vec2D pos;
     private final Vec2D posEnd;
-    private final Image image;
     private final Angle angle;
+    private Image image;
     private float speed;
+    private Runnable removeExe;
 
-    public Bullet(Vec2D pos, Vec2D posEnd, String name) {
+    public void setRemoveExe(Runnable removeExe) {
+        this.removeExe = removeExe;
+    }
+
+    public Bullet(Vec2D pos, Vec2D posEnd) {
         super(TYPE);
         this.pos = new Vec2D(pos);
         this.posEnd = new Vec2D(posEnd);
         this.angle = new Angle(Vec2D.getAngle(this.pos, this.posEnd));
-        this.image = images.get(name);
-        this.speed = 100;
+        this.speed = 1500;
+    }
+
+    public Bullet(Vec2D pos, Vec2D posEnd, String name) {
+        this(pos, posEnd);
+        if (name != null) this.image = images.get(name);
     }
 
     @Override
     public void update() {
         float dist = (float) dt.scalar(speed);
         pos.addAngVec(dist, angle.getValue());
-        if (Vec2D.sub(pos, posEnd).getLength() <= dist) remove();
+        if (Vec2D.sub(pos, posEnd).getLength() <= dist) {
+            if (removeExe != null) removeExe.run();
+            remove();
+        }
     }
 
     @Override
     public void draw(GameDrawer drawer) {
-        Vec2D temp = Vec2D.newAngVec(pos, 12, angle.getValue() - Math.PI);
-        drawer.drawLine(pos, temp, 1, Color.YELLOW);
-//        drawer.drawImage(pos, image, angle);
+        if (image == null) {
+            Vec2D temp = Vec2D.newAngVec(pos, 10, angle.getValue() - Math.PI);
+            drawer.drawLine(pos, temp, 1, Color.YELLOW);
+        } else {
+            drawer.drawImage(pos, image, angle);
+        }
     }
 }

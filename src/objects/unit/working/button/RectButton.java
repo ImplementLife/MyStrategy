@@ -19,7 +19,7 @@ public class RectButton extends Button {
     }
     public RectButton(Vec2D pos, Vec2D size, Runnable exp) {
         this(pos, size);
-        super.setExp(exp);
+        super.setExe(exp);
     }
 
     public void setPos(Vec2D pos) {

@@ -12,16 +12,6 @@ public final class Updater {
     public final static DT dt;
     static {
         thread = new WhileThreadBT(() -> {
-//            while (true) {
-//                try {
-//                    Obj.updateList();
-//                } catch (ConcurrentModificationException e) {
-//                    e.printStackTrace();
-//                    continue;
-//                }
-//                for (Obj obj : Obj.getObj()) obj.update();
-//                break;
-//            }
             for (Obj obj : Obj.getObj()) obj.update();
         }, "Поток обновления объектов игры");
         dt = thread.getDt();

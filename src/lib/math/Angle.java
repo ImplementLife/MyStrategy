@@ -7,6 +7,9 @@ public class Angle {
     //=======================================//
 
     private float value;
+    public Angle(Angle angle) {
+        this(angle.value);
+    }
     public Angle(float value) {
         this.value = valid(value);
     }
@@ -21,6 +24,9 @@ public class Angle {
     public float getValue() {
         valid();
         return value;
+    }
+    public void setValue(Angle angle) {
+        this.value = angle.value;
     }
     public void setValue(float value) {
         this.value = value;

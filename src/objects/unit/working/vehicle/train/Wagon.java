@@ -2,6 +2,7 @@ package objects.unit.working.vehicle.train;
 
 import draw.drawer.GameDrawer;
 import draw.game.ServiceGameDraw;
+import lib.math.Angle;
 import lib.math.Vec2D;
 import objects.game.objects.Obj;
 import objects.game.objects.ObjTypes;
@@ -132,7 +133,7 @@ public class Wagon extends Obj {
     public void draw(GameDrawer drawer) {
         //drawer.drawCircle(nextWayPoint.getPos(), 100, 5, Color.GREEN);
 
-        drawer.drawImage(posNow, img, angleNow);
+        drawer.drawImage(posNow, img, new Angle(angleNow));
         drawer.drawRect(posNow, new Vec2D(200, 400), angleNow, Color.RED);
         //drawer.drawCircle(backTrolley, 50, 2, Color.RED);
         //drawer.drawCircle(frontTrolley, 50, 2, Color.BLUE);

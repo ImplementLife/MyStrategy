@@ -12,14 +12,20 @@ public class MouseListener extends Listener implements java.awt.event.MouseListe
 
     @Override
     public void mouseClicked(MouseEvent e) {
-//        Левая Клавиша Миши
-//        if (SwingUtilities.isLeftMouseButton(e)) {}
+        // Левая Клавиша Миши
+        if (SwingUtilities.isLeftMouseButton(e)) {
+            putEvent(new Event(State.CLICKED, Event.LEFT_MOUSE_BUTTON));
+        }
 
-//        Правая Клавиша Миши
-//        if (SwingUtilities.isRightMouseButton(e)) {}
+        // Правая Клавиша Миши
+        if (SwingUtilities.isRightMouseButton(e)) {
+            putEvent(new Event(State.CLICKED, Event.RIGHT_MOUSE_BUTTON));
+        }
 
-//        Колесо
-//        if (SwingUtilities.isMiddleMouseButton(e)) {}
+        //Колесо
+        if (SwingUtilities.isMiddleMouseButton(e)) {
+            putEvent(new Event(State.CLICKED, Event.WHEEL_MOUSE_BUTTON));
+        }
     }
 
     @Override
@@ -28,9 +34,15 @@ public class MouseListener extends Listener implements java.awt.event.MouseListe
         if (SwingUtilities.isLeftMouseButton(e)) {
             putEvent(new Event(State.PRESSED, Event.LEFT_MOUSE_BUTTON));
         }
+
         // Правая Клавиша Миши
         if (SwingUtilities.isRightMouseButton(e)) {
             putEvent(new Event(State.PRESSED, Event.RIGHT_MOUSE_BUTTON));
+        }
+
+        //Колесо
+        if (SwingUtilities.isMiddleMouseButton(e)) {
+            putEvent(new Event(State.PRESSED, Event.WHEEL_MOUSE_BUTTON));
         }
     }
 
@@ -40,13 +52,16 @@ public class MouseListener extends Listener implements java.awt.event.MouseListe
         if (SwingUtilities.isLeftMouseButton(e)) {
             putEvent(new Event(State.RELEASED, Event.LEFT_MOUSE_BUTTON));
         }
+
         // Правая Клавиша Миши
         if (SwingUtilities.isRightMouseButton(e)) {
             putEvent(new Event(State.RELEASED, Event.RIGHT_MOUSE_BUTTON));
         }
 
-        // Колесо
-        //if (SwingUtilities.isMiddleMouseButton(e)) {}
+        //Колесо
+        if (SwingUtilities.isMiddleMouseButton(e)) {
+            putEvent(new Event(State.RELEASED, Event.WHEEL_MOUSE_BUTTON));
+        }
     }
 
     /*============================================================*/
