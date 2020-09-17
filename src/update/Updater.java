@@ -4,6 +4,8 @@ import lib.threads.bt.DT;
 import lib.threads.bt.WhileThreadBT;
 import main.game.gamePanel.listener.events.Analyzer;
 import objects.game.objects.Obj;
+import objects.unit.working.Unit;
+import objects.unit.working.squads.Squad;
 
 import java.awt.event.KeyEvent;
 
@@ -12,7 +14,10 @@ public final class Updater {
     public final static DT dt;
     static {
         thread = new WhileThreadBT(() -> {
-            for (Obj obj : Obj.getObj()) obj.update();
+            try {
+                for (Obj obj : Obj.getObj()) obj.update();
+                Squad.AttackManager.update();
+            } catch (Exception e) { e.printStackTrace(); }
         }, "Поток обновления объектов игры");
         dt = thread.getDt();
     }

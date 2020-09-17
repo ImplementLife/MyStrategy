@@ -1,6 +1,6 @@
 package objects.FX.Animation;
 
-import lib.Timer;
+import lib.timer.Timer;
 
 import java.awt.*;
 import java.io.File;
@@ -20,7 +20,7 @@ public class Animation {
     }
 
     public void update() {
-        if (loadTimer.start() && images.size() != currentImage) {
+        if (loadTimer.startF() && images.size() != currentImage) {
             currentImage++;
         }
     }

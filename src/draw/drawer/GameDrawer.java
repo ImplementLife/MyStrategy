@@ -31,26 +31,11 @@ public class GameDrawer {
         }
 
         @Override
-        protected void draw(Vec2D posStart, Vec2D size, Color color, DrawExp exp) {
-            if (rectInCamera(posStart, Vec2D.add(posStart, size))) {
-                super.draw(posStart, size, color, exp);
-            }
-        }
-
-        @Override
-        protected void draw(Vec2D posStart, Vec2D size, float angle, Color color, DrawExp exp) {
-            if (inCamera(posStart, size.getLength())) {
-                super.draw(posStart, size, angle, color, exp);
-            }
-        }
-
-        @Override
         public void drawImage(Vec2D pos, Vec2D offset, Image image, float angle) {
             if (inCamera(pos, Math.max(offset.getX(), offset.getY()))) {
                 super.drawImage(posOnCamera(pos), offset, image, angle);
             }
         }
-
     }
 
     //=======================================//
@@ -60,11 +45,25 @@ public class GameDrawer {
         this.drawer = new GD(size, alpha);
     }
 
-    public void drawPentagon(Vec2D pos, Angle angle, float size, float thickness, Color color) {
-        if (inCamera(pos, size)) drawer.drawPentagon(posOnCamera(pos), angle, size, thickness, color);
+    public void drawPentagon(Vec2D pos, Angle angle, Color color, float size, float thickness) {
+        if (inCamera(pos, size)) drawer.drawPentagon(posOnCamera(pos), angle, color, size, thickness);
     }
-    public void fillPentagon(Vec2D pos, Angle angle, float size, Color color) {
-        if (inCamera(pos, size)) drawer.fillPentagon(posOnCamera(pos), angle, size, color);
+    public void fillPentagon(Vec2D pos, Angle angle, Color color, float size) {
+        if (inCamera(pos, size)) drawer.fillPentagon(posOnCamera(pos), angle, color, size);
+    }
+
+    public void drawRect(Vec2D posStart, Vec2D size, Color color, float thickness) {
+        drawer.drawRect(posOnCamera(posStart), size, color, thickness);
+    }
+    public void drawRect(Vec2D posStart, Vec2D size, Angle angle, Color color, float thickness) {
+        drawer.drawRect(posOnCamera(posStart), size, color, thickness, angle);
+    }
+
+    public void fillRect(Vec2D posStart, Vec2D size, Color color) {
+        drawer.fillRect(posOnCamera(posStart), size, color);
+    }
+    public void fillRect(Vec2D posStart, Vec2D size, Angle angle, Color color) {
+        drawer.fillRect(posOnCamera(posStart), size, color, angle);
     }
 
     public void drawTriangle(Vec2D pos, Angle angle, float size, float thickness, Color color) {
@@ -74,33 +73,20 @@ public class GameDrawer {
         if (inCamera(pos, size)) drawer.fillTriangle(posOnCamera(pos), angle, size, color);
     }
 
-    public void fillCircle(Vec2D pos, int radius, Color color) {
+    public void drawLine(Vec2D start, Vec2D end, float thickness, Color color) {
+        drawer.drawLine(posOnCamera(start), posOnCamera(end), color, thickness);
+    }
+
+    public void fillCircle(Vec2D pos, float radius, Color color) {
         if (inCamera(pos, radius)) drawer.fillCircle(posOnCamera(pos), radius, color);
     }
-    public void fillCircle(Vec2D pos, int radius, int border, Color color) {
-        if (border > 0) fillCircle(pos, radius + border, Color.BLACK);
+    public void fillCircle(Vec2D pos, float radius, float border, Color color) {
+        if (border > 0) drawCircle(pos, radius, border, Color.BLACK);
         fillCircle(pos, radius, color);
     }
 
-    public void drawLine(Vec2D start, Vec2D end, int thickness, Color color) {
-        drawer.drawLine(posOnCamera(start), posOnCamera(end), thickness, color);
-    }
-
-    public void drawRect(Vec2D posStart, Vec2D size, Color color) {
-        drawer.drawRect(posOnCamera(posStart), size, color);
-    }
-    public void drawRect(Vec2D posStart, Vec2D size, int thickness, Color color) {
-        drawer.drawRect(posOnCamera(posStart), size, thickness, color);
-    }
-    public void drawRect(Vec2D posStart, Vec2D size, float angle, Color color) {
-        drawer.drawRect(posOnCamera(posStart), size, angle, color);
-    }
-
-    public void fillRect(Vec2D posStart, Vec2D size, Color color) {
-        drawer.fillRect(posOnCamera(posStart), size, color);
-    }
-    public void fillRect(Vec2D posStart, Vec2D size, float angle, Color color) {
-        drawer.fillRect(posOnCamera(posStart), size, angle, color);
+    public void drawCircle(Vec2D pos, float radius, float thickness, Color color) {
+        if (inCamera(pos, radius)) drawer.drawCircle(posOnCamera(pos), radius, thickness, color);
     }
 
     public void drawImage(Vec2D pos, Image image) {

@@ -32,9 +32,9 @@ public class RectButton extends Button {
 
     @Override
     protected void updateState() {
-        if (state != ButtonState.PRESSED && Listener.globalMousePos.inRect(pos, pos.clone().add(size))){
+        if (state != ButtonState.PRESSED && Listener.getGlobalMousePos().inRect(pos, pos.clone().add(size))){
             state = ButtonState.FOCUSED;
-        } else if (state != ButtonState.PRESSED && !Listener.globalMousePos.inRect(pos, pos.clone().add(size))) {
+        } else if (state != ButtonState.PRESSED && !Listener.getGlobalMousePos().inRect(pos, pos.clone().add(size))) {
             state = ButtonState.ACTIVE;
         }
     }
@@ -60,7 +60,7 @@ public class RectButton extends Button {
                 case PRESSED: drawer.fillRect(pos, size, new Color(0xB4FF83)); break;
                 default:      drawer.fillRect(pos, size, Color.GRAY);
             }
-            drawer.drawRect(pos, size, 3, Color.BLACK);
+            drawer.drawRect(pos, size, Color.BLACK, 3);
         }
     }
 }

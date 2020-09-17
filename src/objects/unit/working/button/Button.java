@@ -16,6 +16,7 @@ public abstract class Button extends Obj {
     protected static boolean ctrl;
     //=======================================//
     private Analyzer analyzer;
+    private boolean updateState = true;
 
     protected ButtonState state = ButtonState.ACTIVE;
     private Runnable updateExecute;
@@ -46,8 +47,12 @@ public abstract class Button extends Obj {
 
     protected abstract void updateState();
 
+    public void setUpdate(boolean updateState) {
+        this.updateState = updateState;
+    }
+
     public void update() {
-        updateState();
+        if (updateState) updateState();
     }
 
     public void setFocus() {

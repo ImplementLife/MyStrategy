@@ -9,7 +9,6 @@ import main.game.gamePanel.listener.events.Analyzer;
 import main.game.gamePanel.listener.events.Event;
 import objects.FX.Arrow;
 import objects.game.objects.Id;
-import objects.game.objects.Obj;
 import objects.game.objects.ObjTypes;
 import objects.unit.working.Unit;
 import objects.unit.working.button.Button;
@@ -26,7 +25,37 @@ public class Squad extends Unit {
     private static final ObjTypes TYPE = ObjTypes.SQUAD;
 
     //=======================================//
-    private static HashSet<Squad> squadsInFocus = new HashSet<>();
+    public static HashSet<Squad> squadsInFocus = new HashSet<>();
+
+    public static class AttackManager {
+        private static Unit attackedUnit;
+        private static Analyzer analyzer = new Analyzer(e -> {
+            if (e.isReleased() && e.getKeyCode() == Event.LEFT_MOUSE_BUTTON) {
+                if (squadsInFocus.size() > 0) {
+                    if (attackedUnit != null)
+                    for (Squad s : Squad.squadsInFocus) s.attack(attackedUnit);
+                }
+            }
+        });
+
+        public static void update() {
+            boolean b = false;
+            for (Unit u : units) {
+                if (Vec2D.getLength(u.getPos(), Listener.getGlobalMousePos()) < u.getSize()) {
+                    if (u.isEnemy()) {
+                        b = true;
+                        attackedUnit = u;
+                        break;
+                    }
+                }
+            }
+            if (b && squadsInFocus.size() > 0) StartClass.setCursor("resource/cursor/attack.png");
+            else {
+                attackedUnit = null;
+                StartClass.resetCursor();
+            }
+        }
+    }
 
     //=======================================//
     private final Vec2D centerPos = new Vec2D();
@@ -64,7 +93,7 @@ public class Squad extends Unit {
         }
     });
 
-    private float minSize = 75, maxSize = 150;
+    private float minSize = 50, maxSize = 120;
 
 //    private class ButtonManager {
 //        private final Button button;
@@ -89,8 +118,7 @@ public class Squad extends Unit {
         sizeButton = new Vec2D(50, 25);
         posForButton = Vec2D.sub(getPos(), Vec2D.scalar(sizeButton,0.5));
         //button = new RectButton(posForButton, sizeButton, () -> moveTo(Listener.getMousePos()));
-        button = new RatioButton(posForButton, 20, () -> moveTo(Listener.getMousePos()));
-
+        button = new RatioButton(posForButton, 20, () -> moveTo(Listener.getGlobalMousePos()));
         mover = new MoveManager(this);
     }
 
@@ -122,6 +150,12 @@ public class Squad extends Unit {
     }
 
     @Override
+    public void setPlayer(int player) {
+        super.setPlayer(player);
+        button.setUpdate(!isEnemy());
+    }
+
+    @Override
     public void attack(Unit unit) {
         if (unit instanceof Squad) {
             for (Unit u : groupMembers.values()) u.attack(((Squad) unit).getRandomGroupMembers());
@@ -130,7 +164,7 @@ public class Squad extends Unit {
 
     @Override
     public boolean kill() {
-        return false;
+        return groupMembers.size() < 1;
     }
 
     /*=======================================*/
@@ -162,7 +196,7 @@ public class Squad extends Unit {
 
     @Override
     public float getSize() {
-        return 0;
+        return (float) sizeButton.getLength();
     }
 
     /*=======================================*/
@@ -200,22 +234,6 @@ public class Squad extends Unit {
     private void setCursor() {
         if (button.getState() == ButtonState.PRESSED) squadsInFocus.add(this);
         else squadsInFocus.remove(this);
-
-        if (squadsInFocus.size() > 0) {
-            if (isEnemy()) {
-                if (button.getState() == ButtonState.FOCUSED) {
-                    StartClass.setCursor("resource/cursor/attack.png");
-                    if (rightB) {
-                        for (Squad squad : squadsInFocus) {
-                            squad.attack(this);
-                        }
-                        rightB = false;
-                    }
-                } else {
-                    StartClass.resetCursor();
-                }
-            }
-        }
     }
 
     @Override

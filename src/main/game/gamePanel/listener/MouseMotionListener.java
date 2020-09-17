@@ -1,6 +1,5 @@
 package main.game.gamePanel.listener;
 
-import draw.game.ServiceGameDraw;
 import lib.math.Vec2D;
 
 import java.awt.event.MouseEvent;
@@ -9,14 +8,11 @@ public class MouseMotionListener extends Listener implements java.awt.event.Mous
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        mousePos.setXY(e.getX(), e.getY());
-        globalMousePos.setXY(Vec2D.add(ServiceGameDraw.getCamera().firstPos, Vec2D.scalar(mousePos, ServiceGameDraw.getCamera().currentScale)));
+        setPos(new Vec2D(e.getX(), e.getY()));
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        mousePos.setXY(e.getX(), e.getY());
-        globalMousePos.setXY(Vec2D.add(ServiceGameDraw.getCamera().firstPos, Vec2D.scalar(mousePos, ServiceGameDraw.getCamera().currentScale)));
+        setPos(new Vec2D(e.getX(), e.getY()));
     }
-
 }

@@ -18,6 +18,7 @@ public class DrawerObj implements Drawer {
     @Override
     public void draw() {
         Obj.updateList();
-        for (Obj obj : Obj.getObj()) obj.draw(drawer);
+        try { for (Obj obj : Obj.getObj()) obj.draw(drawer); }
+        catch (Exception e) { e.printStackTrace(); }
     }
 }

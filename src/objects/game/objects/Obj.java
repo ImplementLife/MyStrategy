@@ -19,7 +19,7 @@ public abstract class Obj implements Updatable, Drawn, Comparable {
         return new Id(id);
     }
 
-    public final void remove() {
+    public void remove() {
         remove(this);
         removed = true;
     }

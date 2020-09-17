@@ -25,7 +25,7 @@ public class Bullet extends Obj {
 
         analyzer = new Analyzer(e -> {
             if (e.isPressed() && e.getKeyCode() == Event.LEFT_MOUSE_BUTTON) {
-                new Bullet(new Vec2D(), Listener.globalMousePos, null);
+                new Bullet(new Vec2D(), Listener.getGlobalMousePos(), null);
             }
         });
     }

@@ -5,6 +5,10 @@ public class Event {
     public static final int LEFT_MOUSE_BUTTON = -1;
     public static final int RIGHT_MOUSE_BUTTON = -2;
     public static final int WHEEL_MOUSE_BUTTON = -3;
+
+    public enum State {
+        PRESSED, RELEASED, CLICKED
+    }
     //=======================================//
 
     private State state;
@@ -13,10 +17,6 @@ public class Event {
     public Event(State state, int keyCode) {
         this.state = state;
         this.keyCode = keyCode;
-    }
-
-    public State getState() {
-        return state;
     }
 
     public boolean isPressed() {

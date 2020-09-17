@@ -30,7 +30,6 @@ public class GamePanel extends JPanel {
         this.addMouseWheelListener(new MouseWheelListener());
     }
 
-
     private static TreeMap<String, Cursor> cursors;
 
     public void setCursor(String name) {

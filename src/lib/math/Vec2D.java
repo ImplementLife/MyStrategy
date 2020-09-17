@@ -257,7 +257,7 @@ public class Vec2D implements Serializable, Cloneable {
     }
 
     /**
-     *
+     * Новый вектор под случайным углом
      */
     public static Vec2D newRandomVec(Vec2D vec, double radius) {
         return newAngVec(vec, radius * Math.random(), Angle.E * Math.random());
@@ -287,6 +287,13 @@ public class Vec2D implements Serializable, Cloneable {
     }
 
     /**
+     * Длинна из двух векторов
+     */
+    public static double getLength(Vec2D vec1, Vec2D vec2) {
+        return Vec2D.sub(vec1, vec2).getLength();
+    }
+
+    /**
      * Средний вектор из множества
      */
     public static Vec2D midVec(List<Vec2D> vectors) {
@@ -304,5 +311,4 @@ public class Vec2D implements Serializable, Cloneable {
         d = (int)(d * 1000);
         return d / 1000;
     }
-
 }

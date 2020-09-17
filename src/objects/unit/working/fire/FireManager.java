@@ -7,4 +7,5 @@ public interface FireManager {
     void attack(Unit unit);
     boolean isFire();
     boolean isCanFire();
+    int[] getAmmoCount();
 }

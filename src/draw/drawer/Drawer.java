@@ -5,6 +5,8 @@ import lib.math.Vec2D;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 
@@ -14,9 +16,8 @@ import java.awt.image.BufferedImage;
 public class Drawer {
     private final BufferedImage image;
     private final Graphics2D g;
-    private boolean alpha;
-    private Vec2D size;
 
+    private Vec2D size;
     private final Stroke defaultStroke;
 
     public Drawer(BufferedImage image, Graphics2D g) {
@@ -29,7 +30,7 @@ public class Drawer {
     }
     public Drawer(Vec2D size, boolean alpha) {
         this(new BufferedImage(size.getIntX(), size.getIntY(), alpha ? BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB));
-        this.alpha = alpha;
+        if (alpha) g.setBackground(new Color(0, true));
     }
 
     public BufferedImage getImage() {
@@ -40,18 +41,16 @@ public class Drawer {
         return g;
     }
 
-    public void dispose() {
-        if (alpha) g.setBackground(new Color(0, true));
-        if (size != null) g.clearRect(0,0, size.getIntX(), size.getIntY());
-        else g.clearRect(0,0, image.getWidth(), image.getHeight());
-    }
-
     public void setSize(Vec2D size) {
         this.size = size;
     }
 
-    /*===   Delegate Graphics2D   */
+    public void dispose() {
+        if (size != null) g.clearRect(0,0, size.getIntX(), size.getIntY());
+        else g.clearRect(0,0, image.getWidth(), image.getHeight());
+    }
 
+    /*===   Delegate Graphics2D   */
     private void drawAngle(Vec2D pos, Angle angle, Runnable target) {
         AffineTransform origForm = g.getTransform();
         AffineTransform newForm = (AffineTransform)(origForm.clone());
@@ -61,25 +60,38 @@ public class Drawer {
         g.setTransform(origForm);
     }
 
-    ///   Draw / Fill pentagon
+    private void draw(Shape shape, float thickness) {
+        g.setStroke(new BasicStroke(thickness));
+        g.draw(shape);
+    }
+    private void draw(Shape shape, float thickness, Color color) {
+        g.setColor(color);
+        draw(shape, thickness);
+    }
 
-    public Path2D.Float getPentagon(Vec2D pos, float size) {
+    private void fill(Shape shape, Color color) {
+        g.setColor(color);
+        g.fill(shape);
+    }
+
+    ///   Draw / Fill pentagon
+    private Path2D.Float getPentagon(Vec2D pos, float size) {
         Path2D.Float triangle = new Path2D.Float();
 
         Vec2D pos1 = new Vec2D(pos);
         pos1.subY((size + (size * Math.sqrt(3))/2)/2);
         triangle.moveTo(pos1.getX(), pos1.getY());
 
-        Vec2D pos2 = Vec2D.newAngVec(pos1, size, Math.toRadians(150));
+        Vec2D pos2 = pos1.addAngVec(size, Math.toRadians(150));
         triangle.lineTo(pos2.getX(), pos2.getY());
 
-        Vec2D pos3 = new Vec2D(pos2).addY(size);
+        Vec2D pos3 = pos2.addY(size);
         triangle.lineTo(pos3.getX(), pos3.getY());
 
-        Vec2D pos4 = new Vec2D(pos3).subX(size);
+        Vec2D pos4 = pos3.subX(size);
         triangle.lineTo(pos4.getX(), pos4.getY());
 
-        Vec2D pos5 = new Vec2D(pos4).subY(size);
+        Vec2D pos5 = pos4.subY(size);
         triangle.lineTo(pos5.getX(), pos5.getY());
 
         triangle.closePath();
@@ -87,18 +99,50 @@ public class Drawer {
         return triangle;
     }
 
-    public void drawPentagon(Vec2D pos, Angle angle, float size, float thickness, Color color) {
+    public void drawPentagon(Vec2D pos, Angle angle, Color color, float size, float thickness) {
         g.setColor(color);
-        g.setStroke(new BasicStroke(thickness));
-        drawAngle(pos, angle, () -> g.draw(getPentagon(pos, size)));
+        drawAngle(pos, angle, () -> draw(getPentagon(pos, size), thickness));
     }
-    public void fillPentagon(Vec2D pos, Angle angle, float size, Color color) {
+    public void fillPentagon(Vec2D pos, Angle angle, Color color, float size) {
         g.setColor(color);
         drawAngle(pos, angle, () -> g.fill(getPentagon(pos, size)));
     }
 
-    ///   Draw / Fill triangle
+    ///   Draw / Fill Rect
+    private Path2D.Float getRect(Vec2D pos, Vec2D size) {
+        Path2D.Float triangle = new Path2D.Float();
 
+        Vec2D pos1 = new Vec2D(pos);
+        triangle.moveTo(pos1.getX(), pos1.getY());
+
+        Vec2D pos2 = pos1.addX(size.getX());
+        triangle.lineTo(pos2.getX(), pos2.getY());
+
+        Vec2D pos3 = pos1.addY(size.getY());
+        triangle.lineTo(pos3.getX(), pos3.getY());
+
+        Vec2D pos4 = pos1.subX(size.getX());
+        triangle.lineTo(pos4.getX(), pos4.getY());
+
+        triangle.closePath();
+        return triangle;
+    }
+
+    public void drawRect(Vec2D pos, Vec2D size, Color color, float thickness) {
+        draw(getRect(pos, size), thickness, color);
+    }
+    public void drawRect(Vec2D pos, Vec2D size, Color color, float thickness, Angle angle) {
+        drawAngle(pos, angle, () -> draw(getRect(pos, Vec2D.scalar(size, 0.5)), thickness, color));
+    }
+
+    public void fillRect(Vec2D pos, Vec2D size, Color color) {
+        fill(getRect(pos, size), color);
+    }
+    public void fillRect(Vec2D pos, Vec2D size, Color color, Angle angle) {
+        drawAngle(pos, angle, () -> fill(getRect(Vec2D.sub(pos, Vec2D.scalar(size, 0.5)), size), color));
+    }
+
+    ///   Draw / Fill triangle
     private Path2D.Float getTriangle(Vec2D pos, float size) {
         Path2D.Float triangle = new Path2D.Float();
 
@@ -106,10 +150,10 @@ public class Drawer {
         pos1.subY((size * Math.sqrt(3))/4);
         triangle.moveTo(pos1.getX(), pos1.getY());
 
-        Vec2D pos2 = Vec2D.newAngVec(pos1, size, Math.toRadians(150));
+        Vec2D pos2 = pos1.addAngVec(size, Math.toRadians(150));
         triangle.lineTo(pos2.getX(), pos2.getY());
 
-        Vec2D pos3 = new Vec2D(pos2).subX(size);
+        Vec2D pos3 = pos2.subX(size);
         triangle.lineTo(pos3.getX(), pos3.getY());
 
         triangle.closePath();
@@ -117,82 +161,35 @@ public class Drawer {
     }
 
     public void drawTriangle(Vec2D pos, Angle angle, float size, float thickness, Color color) {
-        g.setColor(color);
-        g.setStroke(new BasicStroke(thickness));
-        drawAngle(pos, angle, () -> g.draw(getTriangle(pos, size)));
+        drawAngle(pos, angle, () -> draw(getTriangle(pos, size), thickness, color));
     }
     public void fillTriangle(Vec2D pos, Angle angle, float size, Color color) {
-        g.setColor(color);
-        drawAngle(pos, angle, () -> g.fill(getTriangle(pos, size)));
-    }
-
-    ///   Fill Circle
-
-    public void fillCircle(Vec2D pos, int radius, Color color) {
-        g.setColor(color);
-        Vec2D posOnImage = new Vec2D(pos.getX() - (radius/2f), pos.getY() - (radius/2f));
-        g.fillOval(posOnImage.getIntX(), posOnImage.getIntY(), radius, radius);
+        drawAngle(pos, angle, () -> fill(getTriangle(pos, size), color));
     }
 
     ///   Draw Line
-
-    public void drawLine(Vec2D start, Vec2D end, int thickness, Color color) {
-        g.setColor(color);
-        g.setStroke(new BasicStroke(thickness));
-        Path2D.Float line = new Path2D.Float();
-        line.moveTo(start.getX(), start.getY());
-        line.lineTo(end.getX(), end.getY());
-        line.closePath();
-        g.draw(line);
-        g.setStroke(defaultStroke);
+    public void drawLine(Vec2D v1, Vec2D v2, Color color, float thickness) {
+        draw(new Line2D.Double(v1.getX(), v1.getY(), v2.getX(), v2.getY()), thickness, color);
     }
 
-    ///   Draw / Fill Rect
-
-    private void drawRect(Vec2D pos, Vec2D size) {
-        g.drawRect(pos.getIntX(), pos.getIntY(), size.getIntX(), size.getIntY());
-    }
-    private void fillRect(Vec2D pos, Vec2D size) {
-        g.fillRect(pos.getIntX(), pos.getIntY(), size.getIntX(), size.getIntY());
-    }
-
-    @FunctionalInterface
-    protected interface DrawExp {
-        void draw(Vec2D v1, Vec2D v2);
-    }
-    protected void draw(Vec2D pos, Vec2D size, Color color, DrawExp exp) {
-        g.setColor(color);
-        exp.draw(pos, size);
+    ///   Fill Circle
+    private Ellipse2D.Double getCircle(Vec2D pos, float radius) {
+        Ellipse2D.Double circle = new Ellipse2D.Double();
+        circle.x = pos.getX() - radius;
+        circle.y = pos.getY() - radius;
+        circle.width = radius*2;
+        circle.height = radius*2;
+        return circle;
     }
 
-    public void drawRect(Vec2D pos, Vec2D size, Color color) {
-        g.setStroke(defaultStroke);
-        draw(pos, size, color, this::drawRect);
+    public void fillCircle(Vec2D pos, float radius, Color color) {
+        fill(getCircle(pos, radius), color);
     }
-    public void drawRect(Vec2D pos, Vec2D size, int thickness, Color color) {
-        g.setStroke(new BasicStroke(thickness));
-        draw(pos, size, color, this::drawRect);
-        g.setStroke(defaultStroke);
-    }
-    public void drawRect(Vec2D pos, Vec2D size, float angle, Color color) {
-        draw(pos, size, angle, color, this::drawRect);
-    }
-
-    protected void draw(Vec2D pos, Vec2D size, float angle, Color color, DrawExp exp) {
-        Vec2D reSize = Vec2D.scalar(size, 0.5);
-        g.setColor(color);
-        drawAngle(pos, new Angle(angle), () -> exp.draw(Vec2D.sub(pos, reSize), size));
-    }
-
-    public void fillRect(Vec2D pos, Vec2D size, Color color) {
-        draw(pos, size, color, this::fillRect);
-    }
-    public void fillRect(Vec2D pos, Vec2D size, float angle, Color color) {
-        draw(pos, size, angle, color, this::fillRect);
+    public void drawCircle(Vec2D pos, float radius, float thickness, Color color) {
+        draw(getCircle(pos, radius), thickness, color);
     }
 
     ///   Draw Image
-
     public void drawImage(Vec2D pos, Image image) {
         g.drawImage(image, pos.getIntX(), pos.getIntY(), null);
     }
@@ -205,7 +202,6 @@ public class Drawer {
     }
 
     ///   Draw String
-
     public void drawString(Vec2D pos, String text, int size, Color color) {
         g.setColor(color);
 //        Font oldFont = g.getFont();
@@ -217,8 +213,7 @@ public class Drawer {
         for (String str : text) drawString(vec.addY(size + 2), str, size, color);
     }
 
-    //===   Settings
-
+    ///===   Settings
     public void setAntialiasing(SettingsG value) {
         switch (value) {
             case QUALITY: g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); break;

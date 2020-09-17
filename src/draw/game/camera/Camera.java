@@ -8,8 +8,8 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class Camera {
-    private static final Vec2D mousePos = main.game.gamePanel.listener.Listener.mousePos;
-    private static final Vec2D globalMousePos = main.game.gamePanel.listener.Listener.globalMousePos;
+    private static final Vec2D mousePos = main.game.gamePanel.listener.Listener.getMousePos();
+    private static final Vec2D globalMousePos = main.game.gamePanel.listener.Listener.getGlobalMousePos();
     private static final Vec2D sizeFrame = new Vec2D(1920, 1080);
 
     private final Analyzer analyzer = new Analyzer(e -> {

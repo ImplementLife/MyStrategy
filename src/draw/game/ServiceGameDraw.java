@@ -9,7 +9,7 @@ import draw.game.camera.Camera;
 import draw.game.drawers.DrawerJPanel;
 import draw.game.drawers.DrawerMap;
 import draw.game.drawers.DrawerObj;
-import lib.Timer;
+import lib.timer.Timer;
 import lib.math.Vec2D;
 import main.game.gamePanel.listener.events.Analyzer;
 
@@ -111,7 +111,7 @@ public final class ServiceGameDraw {
                 finalDrawer.drawImage(new Vec2D(), painterObj.getImage());
                 screenshot();
 
-                if (timer.start()) {
+                if (timer.startF()) {
                     data = new String[] {
                             "UPS thread Map = " + threadManager.drawMap.getEPS(),
                             "UPS thread Obj = " + threadManager.drawObj.getEPS(),

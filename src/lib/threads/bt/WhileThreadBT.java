@@ -25,7 +25,7 @@ public class WhileThreadBT extends Thread {
 
     private void init(Runnable target) {
         this.eps = new EPS(target);
-        this.dt = new DT(0.001);
+        this.dt = new DT(0.005);
     }
 
     //===============================================//

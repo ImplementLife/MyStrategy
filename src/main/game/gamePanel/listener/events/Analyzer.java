@@ -9,6 +9,11 @@ public class Analyzer {
     public static void addEvent(Event e) {
         for (Analyzer a : list) a.putEvent(e);
     }
+
+    @FunctionalInterface
+    public interface ExeEvent {
+        void exe(Event e);
+    }
     //=======================================//
 
     private ExeEvent execute;

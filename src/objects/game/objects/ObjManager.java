@@ -15,14 +15,14 @@ public final class ObjManager {
     }
 
     //==============================================//
-    private final ConcurrentSkipListMap<Id, Obj> objects;
-//    private final TreeMap<Id, Obj> objects;
+//    private final ConcurrentSkipListMap<Id, Obj> objects;
+    private final TreeMap<Id, Obj> objects;
     private ArrayList<Id> idFromClear;
     private TreeMap<Id, Obj> objFromAdd;
 
     private ObjManager() {
-        objects = new ConcurrentSkipListMap<>();
-//        objects = new TreeMap<>();
+//        objects = new ConcurrentSkipListMap<>();
+        objects = new TreeMap<>();
         objFromAdd = new TreeMap<>();
         idFromClear = new ArrayList<>();
     }
@@ -54,16 +54,16 @@ public final class ObjManager {
 
     public synchronized void updateList() {
         //Clear Obj
-        for (Id id : idFromClear) {
-            objects.remove(id);
-            //id.isFree();
-        }
-        idFromClear.clear();
-
+        try {
+            for (Id id : idFromClear) objects.remove(id);
+            idFromClear.clear();
+        } catch (Exception e) { e.printStackTrace(); }
 
         //Add Obj
-        objects.putAll(objFromAdd);
-        objFromAdd.clear();
+        try {
+            objects.putAll(objFromAdd);
+            objFromAdd.clear();
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
     //==============================================//

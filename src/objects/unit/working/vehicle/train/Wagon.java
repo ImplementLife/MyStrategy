@@ -134,7 +134,7 @@ public class Wagon extends Obj {
         //drawer.drawCircle(nextWayPoint.getPos(), 100, 5, Color.GREEN);
 
         drawer.drawImage(posNow, img, new Angle(angleNow));
-        drawer.drawRect(posNow, new Vec2D(200, 400), angleNow, Color.RED);
+        drawer.drawRect(posNow, new Vec2D(200, 400), new Angle(angleNow), Color.RED, 1);
         //drawer.drawCircle(backTrolley, 50, 2, Color.RED);
         //drawer.drawCircle(frontTrolley, 50, 2, Color.BLUE);
     }

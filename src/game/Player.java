@@ -36,7 +36,7 @@ public class Player {
         return Player.isEnemy(this, p);
     }
     public boolean isEnemy() {
-        return Player.isEnemy(this, currentPlayer);
+        return Player.isEnemy(this, getCurrentPlayer());
     }
 
     public void setPlayer(int player) {

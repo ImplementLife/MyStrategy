@@ -2,13 +2,25 @@ package objects.unit.working;
 
 import game.Player;
 import lib.math.Vec2D;
+import main.StartClass;
+import main.game.gamePanel.listener.Listener;
+import main.game.gamePanel.listener.events.Analyzer;
+import main.game.gamePanel.listener.events.Event;
 import objects.game.objects.Obj;
 import objects.game.objects.ObjTypes;
+import objects.unit.working.button.ButtonState;
 import objects.unit.working.fire.FireManager;
+import objects.unit.working.squads.Squad;
+
+import java.util.HashSet;
 
 public abstract class Unit extends Obj {
+    //==========     Static     =============//
+    protected static HashSet<Unit> units = new HashSet<>();
+
+    /*================================*/
     private final Player player = new Player(0);
-    private FireManager fireManager;
+    protected FireManager fireManager;
 
     /*================================*/
     public Unit(ObjTypes type, FireManager fireManager, int player) {
@@ -16,11 +28,12 @@ public abstract class Unit extends Obj {
         this.player.setPlayer(player);
     }
     public Unit(ObjTypes type, FireManager fireManager) {
-        super(type);
+        this(type);
         this.fireManager = fireManager;
     }
     public Unit(ObjTypes type) {
         super(type);
+        units.add(this);
     }
 
     /*================================*/
@@ -52,6 +65,12 @@ public abstract class Unit extends Obj {
     }
 
     /*================================*/
+    @Override
+    public void remove() {
+        super.remove();
+        units.remove(this);
+    }
+
     @Override
     public void update() {
         if (fireManager != null) fireManager.update();
