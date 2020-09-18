@@ -28,8 +28,9 @@ public class Human extends Unit {
     //=======================================//
     private final Vec2D posNow;
     private final Angle angle;
-    private Type type;
+
     private final Mover mover;
+    private Type type;
 
     //=======================================//
 
@@ -39,11 +40,15 @@ public class Human extends Unit {
 
     public Human(Vec2D pos, Type type) {
         super(TYPE);
-        this.setFireManager(new FireManagerImpl(this,80, 2000, 100, 10));
+        this.setFireManager(new FireManagerImpl(this,80, 2000, 1000, 10));
         this.posNow = new Vec2D(pos);
         this.angle = new Angle(0);
-        this.type = type;
         this.mover = new MoverHuman(posNow, 300, 16, 1200, 1200);
+
+        double random = Math.random();
+        if (random > 0.33) this.type = Type.MUNG;
+        else if (random > 0.66) this.type = Type.RIFE;
+        else this.type = type;
     }
 
     //=======================================//
@@ -56,7 +61,7 @@ public class Human extends Unit {
     }
 
     //   Unit Overrides
-    private float health = 1_000_000;
+    private float health = 10_000;
     @Override
     public boolean kill() {
         health--;

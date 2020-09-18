@@ -18,13 +18,13 @@ public class FireManagerImpl implements FireManager {
     private final Queue<Clip> clips;
     private Clip currentClip;
 
-    private boolean fire;
+    private boolean fire, pause = true;
 
     public FireManagerImpl(Unit unit, int reloadAmmo, int reloadClip, int countAmmoInClip, int countClip) {
         this.unit = unit;
         this.reloadAmmo = new Timer(reloadAmmo);
         this.reloadClip = new Timer(reloadClip);
-        this.queue = new Timer((long) (1000 + 1000*Math.random()));
+        this.queue = new Timer((long) (200 + 800 * Math.random()));
         this.clips = new LinkedList<>();
         for (int i = 1; i < countClip; i++) clips.offer(new Clip(countAmmoInClip));
         this.currentClip = new Clip(countAmmoInClip);
@@ -40,17 +40,19 @@ public class FireManagerImpl implements FireManager {
             if (!attackedUnit.isRemoved()) {
                 if (currentClip != null) {
                     if (currentClip.getAmmoCount() > 0) {
-                        if (queue.startF50()) {
-                            if (reloadAmmo.startF()) {
-                                double rad = Vec2D.getLength(unit.getPos(), attackedUnit.getPos()) * 0.01;
-                                currentClip.getAmmo().shot(unit.getPos(), Vec2D.newRandomVec(attackedUnit.getPos(), rad), () -> {
-                                    if (attackedUnit != null) {
-                                        if (attackedUnit.isRemoved()) fire = false;
-                                        else if (Math.random() > 0) attackedUnit.kill();
-                                    }
-                                });
-                                queue.setTimeDelay((long) (1000 + 1000 * Math.random()));
-                            }
+                        if (queue.startF()) {
+                            queue.setTimeDelay((long) (500 + 1000 * Math.random()));
+                            pause = !pause;
+                        }
+                        if (pause && reloadAmmo.startF()) {
+                            double rad = Vec2D.getLength(unit.getPos(), attackedUnit.getPos()) * 0.01;
+                            currentClip.getAmmo().shot(unit.getPos(), Vec2D.newRandomVec(attackedUnit.getPos(), rad), () -> {
+                                if (attackedUnit != null) {
+                                    if (attackedUnit.isRemoved()) fire = false;
+                                    else if (Math.random() > 0) attackedUnit.kill();
+                                }
+                            });
+                            queue.setTimeDelay((long) (1000 + 1000 * Math.random()));
                         }
                     } else {
                         if (reloadClip.startF()) currentClip = clips.poll();

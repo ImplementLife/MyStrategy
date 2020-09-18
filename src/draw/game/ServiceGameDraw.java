@@ -142,7 +142,7 @@ public final class ServiceGameDraw {
 
     private void screenshot() {
         if (screenshot) {
-            String str = "resource/scr/" + date();
+            String str = "resource/images/scr" + date();
             try {
                 File f = new File(str + "scr.png");
                 ImageIO.write(finalDrawer.getImage(), "PNG", f);

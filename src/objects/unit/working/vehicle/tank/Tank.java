@@ -20,8 +20,8 @@ public class Tank extends Unit {
     private static Map<String, Image> images;
     static {
         images = new HashMap<>();
-        putImage("resource/equipment/Tank/body.png");
-        putImage("resource/equipment/Tank/turret.png");
+        putImage("resource/entity/equipment/Tank/default/ally/body.png");
+        putImage("resource/entity/equipment/Tank/default/ally/turret.png");
     }
     private static void putImage(String path) {
         images.put(path, new ImageIcon(path).getImage());
@@ -48,8 +48,8 @@ public class Tank extends Unit {
         this.dbt = new DBT(angle, 1.2f, 1.5f);
         this.mover = new MoverTank(dbt, posNow, 300, 120, 200, 600);
 
-        this.body = new Element(posNow, images.get("resource/equipment/Tank/body.png"), angle);
-        this.turret = new Element(posTurretNow, new Vec2D(28,85), images.get("resource/equipment/Tank/turret.png"), angle);
+        this.body = new Element(posNow, images.get("resource/entity/equipment/Tank/default/ally/body.png"), angle);
+        this.turret = new Element(posTurretNow, images.get("resource/entity/equipment/Tank/default/ally/turret.png"), angle);
     }
 
     public void rotateBody(Vec2D pos) {
@@ -59,10 +59,7 @@ public class Tank extends Unit {
         dbt.rotateTurret((float) Vec2D.getAngle(pos, posTurretNow));
     }
 
-    //=======================================//
-    //   Unit Overrides
-
-
+    //=======================================//   Unit Overrides
     @Override
     public void attack(Unit unit) {
 
@@ -93,9 +90,7 @@ public class Tank extends Unit {
         return 0;
     }
 
-    //=======================================//
-    //   Obj Overrides
-
+    //=======================================//   Obj Overrides
     @Override
     public void update() {
         super.update();

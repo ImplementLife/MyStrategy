@@ -2,15 +2,9 @@ package objects.unit.working;
 
 import game.Player;
 import lib.math.Vec2D;
-import main.StartClass;
-import main.game.gamePanel.listener.Listener;
-import main.game.gamePanel.listener.events.Analyzer;
-import main.game.gamePanel.listener.events.Event;
 import objects.game.objects.Obj;
 import objects.game.objects.ObjTypes;
-import objects.unit.working.button.ButtonState;
 import objects.unit.working.fire.FireManager;
-import objects.unit.working.squads.Squad;
 
 import java.util.HashSet;
 
@@ -18,11 +12,11 @@ public abstract class Unit extends Obj {
     //==========     Static     =============//
     protected static HashSet<Unit> units = new HashSet<>();
 
-    /*================================*/
+    //================================//
     private final Player player = new Player(0);
     protected FireManager fireManager;
 
-    /*================================*/
+    //================================//
     public Unit(ObjTypes type, FireManager fireManager, int player) {
         this(type, fireManager);
         this.player.setPlayer(player);
@@ -36,14 +30,13 @@ public abstract class Unit extends Obj {
         units.add(this);
     }
 
-    /*================================*/
+    //================================//
     public abstract void moveTo(Vec2D pos);
     public abstract boolean isMove();
     public abstract Vec2D getPos();
     public abstract float getSize();
 
-    /*================================*/
-    ///   Work with the players
+    //================================//   Work with the players
     public void setPlayer(Player player) {
         this.player.setPlayer(player);
     }
@@ -64,7 +57,7 @@ public abstract class Unit extends Obj {
         return player.isEnemy();
     }
 
-    /*================================*/
+    //================================//
     @Override
     public void remove() {
         super.remove();
@@ -89,7 +82,7 @@ public abstract class Unit extends Obj {
         return fireManager != null && fireManager.isCanFire();
     }
 
-    /*================================*/
+    //================================//
     public void setFireManager(FireManager fireManager) {
         this.fireManager = fireManager;
     }

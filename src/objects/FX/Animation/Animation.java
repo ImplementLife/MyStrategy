@@ -1,31 +1,54 @@
 package objects.FX.Animation;
 
+import draw.ImageLoader;
+import draw.drawer.GameDrawer;
+import lib.math.Vec2D;
 import lib.timer.Timer;
+import objects.game.objects.Obj;
 
 import java.awt.*;
 import java.io.File;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.util.HashMap;
 
 public class Animation {
-    private ArrayList<Image> images;
-    private int currentImage;
-    private Timer loadTimer;
+    private static HashMap<String, Image[]> allImages = new HashMap<>();
+    private static final String PATH = "resource/images/animations/";
+    private static final String SUFFIX = ".gif";
 
-    public Animation(ArrayList<Image> images, Timer loadTimer) {
-        this.images = images;
-        this.loadTimer = loadTimer;
-    }
-    public Animation(File fileJSON) {
-
-    }
-
-    public void update() {
-        if (loadTimer.startF() && images.size() != currentImage) {
-            currentImage++;
+    static {
+        String name = PATH + "exp" + SUFFIX;
+        try {
+            allImages.put(name, ImageLoader.loadGif(new File(name)));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public Image getCurrentImage() {
-        return images.get(currentImage);
+    private final Vec2D pos;
+    private final Timer pause;
+    private Image[] images;
+    private int currentImage;
+    private boolean loop, remove;
+
+    public Animation(final Vec2D pos, String name, int pause, boolean loop) {
+        this.pos = pos;
+        this.pause = new Timer(pause);
+        this.images = allImages.get(name);
+        this.loop = loop;
+    }
+
+    public boolean isRemove() {
+        return remove;
+    }
+
+    public void draw(GameDrawer drawer) {
+        if (currentImage+1 >= images.length) {
+            if (loop) currentImage = 0;
+            else remove = true;
+        } else if (pause.startF()) {
+            currentImage++;
+        }
+        drawer.drawImage(pos, images[currentImage]);
     }
 }

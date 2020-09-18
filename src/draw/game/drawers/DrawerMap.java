@@ -11,6 +11,8 @@ import java.awt.*;
 import java.util.HashMap;
 
 public class DrawerMap implements Drawer {
+    private static String PATH_IMAGES = "resource/images/tiles/";
+
     private GameDrawer drawer;
 
     public DrawerMap(GameDrawer drawer) {
@@ -27,21 +29,21 @@ public class DrawerMap implements Drawer {
     private static void init(Vec2D sizeTile) {
         if (tiles == null) {
             tiles = new HashMap<>();
-            tiles.put("00", ImageLoader.resize(sizeTile, "resource/tiles/myTiles/00.png"));
-            tiles.put("01", ImageLoader.resize(sizeTile, "resource/tiles/myTiles/01.png"));
-            tiles.put("02", ImageLoader.resize(sizeTile, "resource/tiles/myTiles/02.png"));
-            tiles.put("03", ImageLoader.resize(sizeTile, "resource/tiles/myTiles/03.png"));
-            tiles.put("04", ImageLoader.resize(sizeTile, "resource/tiles/myTiles/04.png"));
-            tiles.put("05", ImageLoader.resize(sizeTile, "resource/tiles/myTiles/05.png"));
-            tiles.put("06", ImageLoader.resize(sizeTile, "resource/tiles/myTiles/06.png"));
-            tiles.put("07", ImageLoader.resize(sizeTile, "resource/tiles/myTiles/07.png"));
-            tiles.put("08", ImageLoader.resize(sizeTile, "resource/tiles/myTiles/08.png"));
-            tiles.put("09", ImageLoader.resize(sizeTile, "resource/tiles/myTiles/09.png"));
-            tiles.put("10", ImageLoader.resize(sizeTile, "resource/tiles/myTiles/10.png"));
-            tiles.put("11", ImageLoader.resize(sizeTile, "resource/tiles/myTiles/11.png"));
-            tiles.put("12", ImageLoader.resize(sizeTile, "resource/tiles/myTiles/12.png"));
+            tiles.put("00", ImageLoader.resize(sizeTile, PATH_IMAGES + "grass/00.png"));
+            tiles.put("01", ImageLoader.resize(sizeTile, PATH_IMAGES + "grass/01.png"));
+            tiles.put("02", ImageLoader.resize(sizeTile, PATH_IMAGES + "grass/02.png"));
+            tiles.put("03", ImageLoader.resize(sizeTile, PATH_IMAGES + "grass/03.png"));
+            tiles.put("04", ImageLoader.resize(sizeTile, PATH_IMAGES + "grass/04.png"));
+            tiles.put("05", ImageLoader.resize(sizeTile, PATH_IMAGES + "grass/05.png"));
+            tiles.put("06", ImageLoader.resize(sizeTile, PATH_IMAGES + "grass/06.png"));
+            tiles.put("07", ImageLoader.resize(sizeTile, PATH_IMAGES + "grass/07.png"));
+            tiles.put("08", ImageLoader.resize(sizeTile, PATH_IMAGES + "grass/08.png"));
+            tiles.put("09", ImageLoader.resize(sizeTile, PATH_IMAGES + "grass/09.png"));
+            tiles.put("10", ImageLoader.resize(sizeTile, PATH_IMAGES + "grass/10.png"));
+            tiles.put("11", ImageLoader.resize(sizeTile, PATH_IMAGES + "grass/11.png"));
+            tiles.put("12", ImageLoader.resize(sizeTile, PATH_IMAGES + "grass/12.png"));
 
-            tiles.put("water", ImageLoader.resize(sizeTile, "resource/tiles/water/00.png"));
+            tiles.put("water", ImageLoader.resize(sizeTile, PATH_IMAGES + "water/00.png"));
         }
     }
 

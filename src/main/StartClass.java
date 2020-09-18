@@ -7,7 +7,6 @@ import main.game.gamePanel.GamePanel;
 import update.Updater;
 
 import javax.swing.*;
-import java.awt.*;
 
 public final class StartClass {
     private StartClass() {}

@@ -49,7 +49,7 @@ public class Squad extends Unit {
                     }
                 }
             }
-            if (b && squadsInFocus.size() > 0) StartClass.setCursor("resource/cursor/attack.png");
+            if (b && squadsInFocus.size() > 0) StartClass.setCursor("resource/images/cursors/attack.png");
             else {
                 attackedUnit = null;
                 StartClass.resetCursor();
