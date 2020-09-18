@@ -8,10 +8,10 @@ import draw.drawer.SettingsG;
 import draw.game.camera.Camera;
 import draw.game.drawers.DrawerJPanel;
 import draw.game.drawers.DrawerMap;
-import draw.game.drawers.DrawerObj;
-import lib.timer.Timer;
 import lib.math.Vec2D;
+import lib.timer.Timer;
 import main.game.gamePanel.listener.events.Analyzer;
+import objects.game.objects.DrawManager;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -46,7 +46,6 @@ public final class ServiceGameDraw {
     private GameDrawer painterObj;
 
     private DrawerMap drawerMap;
-    private DrawerObj drawerObj;
     private DrawerJPanel drawerJPanel;
 
     private ServiceGameDraw() {}
@@ -94,7 +93,6 @@ public final class ServiceGameDraw {
 
         {
             drawerMap = new DrawerMap(painterMap);
-            drawerObj = new DrawerObj(painterObj);
             drawerJPanel = new DrawerJPanel(panel, finalDrawer);
         }
 
@@ -102,7 +100,7 @@ public final class ServiceGameDraw {
             threadManager = ThreadManager.getThreadManager();
 
             threadManager.drawMap.setExe(() -> drawerMap.draw());
-            threadManager.drawObj.setExe(() -> drawerObj.draw());
+            threadManager.drawObj.setExe(() -> DrawManager.getDrawManager().iterate(painterObj));
 
             Timer timer = new Timer(500);
             threadManager.drawFinal.setExe(() -> {

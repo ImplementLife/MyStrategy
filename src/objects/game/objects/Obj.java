@@ -1,26 +1,34 @@
 package objects.game.objects;
 
+import draw.drawer.GameDrawer;
+
 import java.util.Collection;
 
-public abstract class Obj implements Updatable, Drawn, Comparable {
+public abstract class Obj implements Comparable {
+    private ObjTypes type;
     private Id id;
     private boolean removed;
+    private DrawManager.Draw draw;
+    private UpdateManager.Update update;
 
     //==============================================//
-
     public Obj(ObjTypes type) {
+        this.type = type;
         id = new Id(type);
         put(this);
+        setDraw(true);
+        setUpdate(true);
     }
 
     //==============================================//
-
     public final Id getId() {
         return new Id(id);
     }
 
     public void remove() {
         remove(this);
+        if (draw != null) draw.remove();
+        if (update != null) update.remove();
         removed = true;
     }
 
@@ -29,7 +37,26 @@ public abstract class Obj implements Updatable, Drawn, Comparable {
     }
 
     //==============================================//
+    public final void setDraw(boolean isDraw) {
+        if (isDraw) {
+            if (draw == null) draw = new DrawManager.Draw(this, (int) type.type);
+            draw.setDraw(true);
+        } else if (draw != null) draw.setDraw(false);
+    }
+    public final void setLayer(Integer layer) {
+        draw.setLayer(layer);
+    }
 
+    public final void setUpdate(boolean isUpdate) {
+        if (update == null) update = new UpdateManager.Update(this);
+    }
+
+    //==============================================//
+    public void update() {}
+
+    public void draw(GameDrawer drawer) {}
+
+    //==============================================//
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -54,22 +81,11 @@ public abstract class Obj implements Updatable, Drawn, Comparable {
     }
 
     /*============================================================================================*/
-
     private static ObjManager objManager = ObjManager.getObjManager();
 
     public static Collection<Obj> getObj() {
         return objManager.getObj();
     }
-    public static Collection<Obj> getObjFromType(ObjTypes unitType) {
-        return objManager.getObjFromType(unitType);
-    }
-    public static Collection<Obj> getObjFromId(Collection<Id> listId) {
-        return objManager.getObjFromId(listId);
-    }
-    public static Obj getObjFromId(Id id) {
-        return objManager.getObjFromId(id);
-    }
-
     public static void updateList() {
         objManager.updateList();
     }

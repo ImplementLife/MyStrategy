@@ -79,19 +79,19 @@ public class Drawer {
         Path2D.Float triangle = new Path2D.Float();
 
         Vec2D pos1 = new Vec2D(pos);
-        pos1.subY((size + (size * Math.sqrt(3))/2)/2);
+        pos1.subY((size*2/3 + (size * Math.sqrt(3))/2)/2);
         triangle.moveTo(pos1.getX(), pos1.getY());
 
         Vec2D pos2 = pos1.addAngVec(size, Math.toRadians(150));
         triangle.lineTo(pos2.getX(), pos2.getY());
 
-        Vec2D pos3 = pos2.addY(size);
+        Vec2D pos3 = pos2.addY(size*2/3);
         triangle.lineTo(pos3.getX(), pos3.getY());
 
         Vec2D pos4 = pos3.subX(size);
         triangle.lineTo(pos4.getX(), pos4.getY());
 
-        Vec2D pos5 = pos4.subY(size);
+        Vec2D pos5 = pos4.subY(size*2/3);
         triangle.lineTo(pos5.getX(), pos5.getY());
 
         triangle.closePath();

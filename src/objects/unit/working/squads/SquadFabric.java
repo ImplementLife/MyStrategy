@@ -7,11 +7,16 @@ import objects.unit.working.vehicle.tank.Tank;
 public final class SquadFabric {
     private SquadFabric(){}
 
-    public static Squad createTankSquad(Vec2D pos, int count, float radius) {
+    public static Squad createTankSquad(Vec2D pos, int count, float radius, int player) {
         Squad squad = new Squad();
         for (int i = 0; i < count; i++) {
-            squad.putMembers(new Tank(Vec2D.newRandomVec(pos, radius), 0));
+            Tank tank = new Tank(Vec2D.newRandomVec(pos, radius), 0);
+            tank.setPlayer(player);
+            squad.putMembers(tank);
+
         }
+        squad.setPlayer(player);
+
         squad.updateButtonPos();
         return squad;
     }

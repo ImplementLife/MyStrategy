@@ -32,12 +32,12 @@ public class RatioButton extends Button {
 
     @Override
     public void draw(GameDrawer drawer) {
-        drawer.fillCircle(pos, (int) (radius + 6), Color.BLACK);
+        float border = 3;
         switch (state) {
-            case ACTIVE:  drawer.fillCircle(pos, (int) radius, new Color(0xFF000F)); break;
-            case FOCUSED: drawer.fillCircle(pos, (int) radius, new Color(0xFF544A)); break;
-            case PRESSED: drawer.fillCircle(pos, (int) radius, new Color(0xB4FF83)); break;
-            default:      drawer.fillCircle(pos, (int) radius, Color.GRAY);
+            case ACTIVE:  drawer.fillCircle(pos, radius, border, new Color(0xFF000F)); break;
+            case FOCUSED: drawer.fillCircle(pos, radius, border, new Color(0xFF544A)); break;
+            case PRESSED: drawer.fillCircle(pos, radius, border, new Color(0xB4FF83)); break;
+            default:      drawer.fillCircle(pos, radius, border, Color.GRAY);
         }
     }
 

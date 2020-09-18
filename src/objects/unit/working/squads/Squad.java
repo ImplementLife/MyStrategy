@@ -12,7 +12,6 @@ import objects.game.objects.Id;
 import objects.game.objects.ObjTypes;
 import objects.unit.working.Unit;
 import objects.unit.working.button.Button;
-import objects.unit.working.button.ButtonState;
 import objects.unit.working.button.RatioButton;
 import update.move.Mover;
 import update.move.managers.MoveManager;
@@ -152,7 +151,7 @@ public class Squad extends Unit {
     @Override
     public void setPlayer(int player) {
         super.setPlayer(player);
-        button.setUpdate(!isEnemy());
+        button.setCanUpdate(!isEnemy());
     }
 
     @Override
@@ -232,7 +231,7 @@ public class Squad extends Unit {
     }
 
     private void setCursor() {
-        if (button.getState() == ButtonState.PRESSED) squadsInFocus.add(this);
+        if (button.getState() == Button.ButtonState.PRESSED) squadsInFocus.add(this);
         else squadsInFocus.remove(this);
     }
 

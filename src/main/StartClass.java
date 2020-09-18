@@ -19,7 +19,7 @@ public final class StartClass {
     }
 
     public static void main(String[] args) {
-        frame = new JFrame("MyStrategy 4.0");
+        frame = new JFrame("MyStrategy 5.0");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(800,600);
         frame.setLocationRelativeTo(null);

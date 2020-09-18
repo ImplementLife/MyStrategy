@@ -25,7 +25,7 @@ public final class Id implements Comparable {
     private int num;
 
     Id(ObjTypes type) {
-        this.type = type.Type;
+        this.type = type.type;
         this.num = listsId.get(type).getUnitNum();
     }
     public Id(Id id) {

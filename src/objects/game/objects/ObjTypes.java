@@ -1,7 +1,6 @@
 package objects.game.objects;
 
 public enum ObjTypes {
-    NULL(-1),
     DECAL(0),
     ROAD(1),
     RAIL_WAY(2),
@@ -26,6 +25,6 @@ public enum ObjTypes {
 
     //=======================================//
 
-    public final byte Type;
-    ObjTypes(int type) { Type = (byte) type; }
+    public final byte type;
+    ObjTypes(int type) { this.type = (byte) type; }
 }

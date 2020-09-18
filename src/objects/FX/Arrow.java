@@ -5,7 +5,7 @@ import lib.math.Vec2D;
 
 import java.awt.*;
 
-public class Arrow extends FX {
+public class Arrow {
     private final Vec2D first, end, right, left;
     private boolean draw;
 
@@ -32,7 +32,6 @@ public class Arrow extends FX {
         this.end.setXY(end);
     }
 
-    @Override
     public void draw(GameDrawer drawer) {
         if (draw) {
             float angle = (float) Vec2D.getAngle(first, end);

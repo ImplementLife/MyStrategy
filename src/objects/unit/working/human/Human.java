@@ -16,7 +16,7 @@ public class Human extends Unit {
     private static final ObjTypes TYPE = ObjTypes.HUMAN;
 
     public enum Type {
-        SMG(10),
+        SMG(5),
         RIFE(12),
         MUNG(10);
         int size;
@@ -46,7 +46,7 @@ public class Human extends Unit {
         this.mover = new MoverHuman(posNow, 300, 16, 1200, 1200);
 
         double random = Math.random();
-        if (random > 0.33) this.type = Type.MUNG;
+        if (random < 0.33) this.type = Type.MUNG;
         else if (random > 0.66) this.type = Type.RIFE;
         else this.type = type;
     }
@@ -108,12 +108,12 @@ public class Human extends Unit {
         switch (type) {
             case SMG:  drawer.fillCircle(posNow, type.size, 4, color); break;
             case RIFE: {
-                drawer.fillTriangle(new Vec2D(), angle, type.size, color);
-                drawer.drawTriangle(new Vec2D(), angle, type.size, 2, Color.BLACK);
+                drawer.fillTriangle(posNow, angle, type.size, color);
+                drawer.drawTriangle(posNow, angle, type.size, 2, Color.BLACK);
             } break;
             case MUNG: {
-                drawer.fillPentagon(new Vec2D(), angle, color, type.size);
-                drawer.drawPentagon(new Vec2D(), angle, Color.BLACK, type.size, 2);
+                drawer.fillPentagon(posNow, angle, color, type.size);
+                drawer.drawPentagon(posNow, angle, Color.BLACK, type.size, 2);
             } break;
         }
         //draw ammo count

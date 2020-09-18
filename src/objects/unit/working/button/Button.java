@@ -13,6 +13,13 @@ public abstract class Button extends Obj {
     //==========     Static     =============//
     private static final ObjTypes TYPE = ObjTypes.BUTTON;
 
+    public enum ButtonState {
+        ACTIVE,
+        DISABLE,
+        PRESSED,
+        FOCUSED;
+    }
+
     protected static boolean ctrl;
     //=======================================//
     private Analyzer analyzer;
@@ -47,10 +54,11 @@ public abstract class Button extends Obj {
 
     protected abstract void updateState();
 
-    public void setUpdate(boolean updateState) {
+    public void setCanUpdate(boolean updateState) {
         this.updateState = updateState;
     }
 
+    @Override
     public void update() {
         if (updateState) updateState();
     }

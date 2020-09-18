@@ -1,9 +1,14 @@
 package update;
 
+import lib.math.Vec2D;
 import lib.threads.bt.DT;
 import lib.threads.bt.WhileThreadBT;
+import main.game.gamePanel.listener.Listener;
 import main.game.gamePanel.listener.events.Analyzer;
+import main.game.gamePanel.listener.events.Event;
+import objects.FX.Animation.Animation;
 import objects.game.objects.Obj;
+import objects.game.objects.UpdateManager;
 import objects.unit.working.Unit;
 import objects.unit.working.squads.Squad;
 
@@ -14,10 +19,8 @@ public final class Updater {
     public final static DT dt;
     static {
         thread = new WhileThreadBT(() -> {
-            try {
-                for (Obj obj : Obj.getObj()) obj.update();
-                Squad.AttackManager.update();
-            } catch (Exception e) { e.printStackTrace(); }
+            UpdateManager.getUpdateManager().iterate();
+            Squad.AttackManager.update();
         }, "Поток обновления объектов игры");
         dt = thread.getDt();
     }
@@ -30,6 +33,9 @@ public final class Updater {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE && e.isReleased()) {
             thread.stopped();
             System.exit(0);
+        }
+        if (e.isReleased() && e.getKeyCode() == Event.LEFT_MOUSE_BUTTON) {
+            new Animation(Listener.getGlobalMousePos().clone(), "exp", false);
         }
     });
 }
