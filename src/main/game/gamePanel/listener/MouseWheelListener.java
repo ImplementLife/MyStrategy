@@ -1,6 +1,6 @@
 package main.game.gamePanel.listener;
 
-import draw.game.ServiceGameDraw;
+import game.draw.ServiceGameDraw;
 
 import java.awt.event.MouseWheelEvent;
 

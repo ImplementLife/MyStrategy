@@ -82,7 +82,7 @@ public class WhileThreadESP extends Thread {
             if (semaphore != null) {
                 try {
                     semaphore.acquire(weight);
-//                    System.out.println(getName() + " is update.");
+//                    System.out.println(getName() + " is game.update.");
                     if (eps != null) eps.run();
                     semaphore.release(weight);
                 } catch (InterruptedException e) {

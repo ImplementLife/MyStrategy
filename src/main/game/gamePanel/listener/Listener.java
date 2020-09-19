@@ -1,6 +1,6 @@
 package main.game.gamePanel.listener;
 
-import draw.game.ServiceGameDraw;
+import game.draw.ServiceGameDraw;
 import lib.math.Vec2D;
 import main.game.gamePanel.listener.events.Analyzer;
 import main.game.gamePanel.listener.events.Event;

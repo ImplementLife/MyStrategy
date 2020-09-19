@@ -1,10 +1,11 @@
 package main;
 
-import draw.game.ServiceGameDraw;
+import draw.resource.Resource;
+import game.draw.ServiceGameDraw;
 import lib.math.Vec2D;
 import main.game.GameService;
 import main.game.gamePanel.GamePanel;
-import update.Updater;
+import game.update.Updater;
 
 import javax.swing.*;
 
@@ -19,6 +20,7 @@ public final class StartClass {
     }
 
     public static void main(String[] args) {
+        Resource.init();
         frame = new JFrame("MyStrategy 5.0");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(800,600);
@@ -100,7 +102,7 @@ public final class StartClass {
 //        System.out.println("   ///   sum Angle = " + help(Math.toDegrees(angleC + angleA + angleB)));
     }
     private static void test3() {
-        //        Vec2D v1 = new Vec2D(22, 16);
+//        Vec2D v1 = new Vec2D(22, 16);
 //        Vec2D v2 = new Vec2D(14, 26);
 //        System.out.println("scalarProduct = " + Math.toDegrees(Vec2D.scalarProd(v1, v2)));
 

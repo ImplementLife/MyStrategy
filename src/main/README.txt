@@ -25,8 +25,8 @@
 
 - Класс "lib.math.Vec2D" -> Основные Векторные операции
 
-- Классы "objects.game.objects.Obj" & "objects.game.objects.Id" -> Основная объектная область
-Все Игровые Юниты наследуются от "objects.game.objects.Obj" так как он занимается
+- Классы "game.objects.GameObject" & "game.objects.Id" -> Основная объектная область
+Все Игровые Юниты наследуются от "game.objects.GameObject" так как он занимается
 Сортировкой и упорядочиванием объектов
 
 
@@ -47,7 +47,7 @@
 
 
 
-В пакете "objects.unit.working.vehicle.train" жутко недоработанная механика
+В пакете "game.unit.working.vehicle.train" жутко недоработанная механика
 движения вагонов по ЖД путям (Основная связь между
 Классами "Wagon", "RailWay", "WayPoint")
 
